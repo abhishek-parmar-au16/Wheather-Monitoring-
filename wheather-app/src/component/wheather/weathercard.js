@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Weathercard = ({tempInfo}) =>{
+    const[weatherState , setWheatherState] = useState("")
     const {
         temp,
         humidity,
@@ -11,11 +12,35 @@ const Weathercard = ({tempInfo}) =>{
         country,
         sunset
          } =tempInfo;
+        
+         let sec = sunset;
+         let date = new Date(sec*1000);
+         let timestr= `${date.getHours()}:${date.getMinutes()}`;
+
+         useEffect(()=>{
+             if (weathermood){
+                 switch (weathermood) {
+                     case "Clouds":
+                        setWheatherState("wi-day-cloudy");
+                         break;
+                     case "Haze":
+                        setWheatherState("wi-fog");
+                         break;
+                     case "Clear":
+                        setWheatherState("wi-day-sunny");
+                         break;
+                     
+                         default:
+                        setWheatherState("wi-day-sunny");
+                        break;
+                 }
+             }
+         })
     return (
         <>
         <article className="widget">
             <div className="weatherIcon">
-                <i className={"wi wi-day-sunny"}></i>
+                <i className={`wi ${weatherState}`}></i>
             </div>
 
             <div className="weatherInfo">
@@ -24,7 +49,7 @@ const Weathercard = ({tempInfo}) =>{
                 </div>
 
                 <div className="description">
-                    <div className="weatherCondition">sunny</div>
+                    <div className="weatherCondition">{weathermood}</div>
                     <div className="place">{name} ,{country}</div>
                 </div>
             </div>
@@ -38,7 +63,7 @@ const Weathercard = ({tempInfo}) =>{
                             <i className={"wi wi-sunset"}></i>
                         </p>
                         <p className="extra-info-leftside">
-                            19:19 PM <br />
+                            {timestr} <br />
                             sunset
                         </p>
                     </div>
@@ -47,7 +72,7 @@ const Weathercard = ({tempInfo}) =>{
                             <i className={"wi wi-rain"}></i>
                         </p>
                         <p className="extra-info-leftside">
-                            19:19 PM <br />
+                            {pressure} <br />
                             pressure
                         </p>
                     </div>
@@ -61,7 +86,7 @@ const Weathercard = ({tempInfo}) =>{
                             <i className={"wi wi-strong-wind"}></i>
                         </p>
                         <p className="extra-info-leftside">
-                          19:19 PM <br />
+                          {speed} <br />
                           speed
                         </p>
                     </div>
@@ -70,7 +95,7 @@ const Weathercard = ({tempInfo}) =>{
                             <i className={"wi wi-humidity"}></i>
                         </p>
                         <p className="extra-info-leftside">
-                            19:19 PM <br />
+                            {humidity}  <br />
                             humidity
                         </p>
                     </div>
